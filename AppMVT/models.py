@@ -19,4 +19,4 @@ class Profesores(models.Model):
 
 class Materias(models.Model):
     nombre = models.CharField(max_length=50)
-    anio = models.IntegerField()
+    nivel = models.IntegerField()

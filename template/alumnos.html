@@ -3,5 +3,15 @@
 {% load static %}
 
 {% block principal %}
-    <h1>alumnos</h1>
+<h1>Formulario Alumnos</h1>
+
+<form action="{% url 'alumnos' %}" method="POST"> {% csrf_token %}
+
+    <table>
+        {{ form.as_table }}
+    </table>
+
+    <input type="submit" value="ENVIAR">
+
+</form>
 {% endblock %}

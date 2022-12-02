@@ -2,45 +2,65 @@ from django.shortcuts import render
 from .models import Alumnos, Profesores, Materias
 from django.http import HttpResponse
 from django.template import loader
+from AppMVT.forms import ProfesoresForm, AlumnosForm, MateriasForm
 
 # Create your views here.
 def alumnos(request):
-    persona1 = Alumnos(nombre="Pedro", fecha="1997-03-27", email="asdasd@asdas.com")
-    persona2 = Alumnos(nombre="Ivana", fecha="1975-03-13", email="asdsasd@assdas.com")
-    persona3 = Alumnos(nombre="Dario", fecha="1973-03-26", email="asdaasd@sasdas.com")
+    if request.method== 'POST':
+      form = AlumnosForm(request.POST)
+
+      if form.is_valid():
+        info = form.cleaned_data
+      
+        nombre = info["nombre"]
+        fecha = info["fecha"]
+        email = info["email"]
+
+        alumno1 = Alumnos(nombre=nombre, fecha=fecha, email=email)
+        alumno1.save()
+        return render(request, "inicio.html")
+    else:
+        formulario = AlumnosForm()
+        
+    return render(request, "alumnos.html", {"form":formulario})
     
-    persona1.save()
-    persona2.save()
-    persona3.save()
-
-    """dic = {
-        "nombre_persona1": persona1.nombre, "edad_persona1": persona1.edad, "fecha_persona1": persona1.fecha,
-        "nombre_persona2": persona2.nombre, "edad_persona2": persona2.edad, "fecha_persona2": persona2.fecha,
-        "nombre_persona3": persona3.nombre, "edad_persona3": persona3.edad, "fecha_persona3": persona3.fecha,
-    }
-
-    plantilla = loader.get_template('alumnos.html')
-    documento = plantilla.render(dic)"""
-
-    return render(request, "alumnos.html")
 
 def profesores(request):
     if request.method== 'POST':
-      nombre = request.POST["nombre"]
-      profesion = request.POST["profesion"]
-      email = request.POST["email"]
+      form = ProfesoresForm(request.POST)
 
-      profesor1 = Profesores(nombre=nombre, profesion=profesion, email=email)
-      profesor1.save()
-      return render(request, "inicio.html")
+      if form.is_valid():
+        info = form.cleaned_data
+      
+        nombre = info["nombre"]
+        profesion = info["profesion"]
+        email = info["email"]
+
+        profesor1 = Profesores(nombre=nombre, profesion=profesion, email=email)
+        profesor1.save()
+        return render(request, "inicio.html")
+    else:
+        formulario = ProfesoresForm()
         
-    return render(request, "profesores.html")
+    return render(request, "profesores.html", {"form":formulario})
 
 def materias(request):
-    plantilla = loader.get_template('materias.html')
-    documento = plantilla.render()
+    if request.method== 'POST':
+      form = MateriasForm(request.POST)
 
-    return HttpResponse(documento)  
+      if form.is_valid():
+        info = form.cleaned_data
+      
+        nombre = info["nombre"]
+        nivel = info["nivel"]
+
+        materia1 = Profesores(nombre=nombre, nivel=nivel)
+        materia1.save()
+        return render(request, "inicio.html")
+    else:
+        formulario = MateriasForm()
+        
+    return render(request, "materias.html", {"form":formulario})  
 
 def inicio(request):
     
